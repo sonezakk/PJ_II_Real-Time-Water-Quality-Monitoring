@@ -77,14 +77,7 @@ const float SaturationValueTab[41] PROGMEM = {
     6.53,
     6.41,
 };
-// void sendfirebase(String type, float val2)
-// {
-//   StaticJsonBuffer<200> jsonBuffer;
-//   JsonObject &root = jsonBuffer.createObject();
-//   root[type] = val2;
-//   // root["DAY"] = daynows() + " " + timenows();
-//   String name = Firebase.push(type, root);
-// }
+
 float sensorPh()
 {
    int  sensorValueph =0,avg_sensorph ; 
@@ -161,10 +154,7 @@ void send_blynk()
   char PhBlynk[16];
   dtostrf(sensorPh(), 2, 2,PhBlynk);
   Blynk.virtualWrite(V0,PhBlynk);
-  // dtostrf(sensorTemp(), 2, 2, tempBlynk);
-  // Blynk.virtualWrite(V2, tempBlynk);
-  // dtostrf(sensorDo(), 2, 2, DoBlynk);
-  // Blynk.virtualWrite(V1, DoBlynk);
+
 }
 
 void onoffsensor()
@@ -183,3 +173,31 @@ void serialprintf(String type, float data)
   Serial.println(type +" sensor : " + (String)data);
   
 }
+
+
+// /////// ควบคุม //////////////// 
+// void controlmoter(int status)
+// {
+//   statusmorter = status;
+//   digitalWrite(relayD0, status);
+//   serialprintf("morter status > " + String(status));
+
+// }
+
+// void moterdelay(float data, float max, float min)     // data = DO , data>= max = stop , data <= min  = start ,
+// {
+//   if (data >= max)
+//   {
+//     controlmoter(0);
+//   
+//     LINE.notify("ปั้มหยุดทำงาน");
+
+//   }
+//   if (data <= min)
+//   {
+//     controlmoter(1);
+//  
+//     LINE.notify("ปั้มกำลังทำงาน");
+ 
+//   }
+// }
