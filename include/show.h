@@ -1,5 +1,4 @@
 #include<cal.h>
-
 // Global val
 int step = 1;
 int LedWifi = D4;

@@ -8,11 +8,12 @@
 #include <ESP8266HTTPClient.h>
 #include <FirebaseArduino.h>
 
+
 char auth[] = "JX0m0y_m5FomW9eEFnhhZK7pTfNlA8L9";
 //thingspeak
-unsigned long myChannelNumber = 914246;
-const char *myWriteAPIKey = "H9JOOZ14XZR40QEG";
-const char *server = "api.thingspeak.com";
+// unsigned long myChannelNumber = 914246;
+// const char *myWriteAPIKey = "H9JOOZ14XZR40QEG";
+// const char *server = "api.thingspeak.com";
 
 //line
 #define LINE_TOKEN "xnirEr9FSMfvD2QO6D1oNU7ZibGFkc9GphXjq4Kyeza"
@@ -31,6 +32,9 @@ DS18B20 sensor(&oneWire);
 float sensorTemp();
 String timenows();
 String daynows();
+
+
+
 
 // oxygen//
 const float SaturationValueTab[41] PROGMEM = {
@@ -130,13 +134,11 @@ float sensorTemp()
 
 void senddata_thingspeak1()
 {
-  ThingSpeak.setField(2, sensorDo());
-  ThingSpeak.setField(3, sensorTemp());
+
   LINE.notify("DO:"+ (String)sensorDo()+ "Temp :" + (String)sensorTemp());
 }
 void senddata_thingspeak()
 {
-  ThingSpeak.setField(1, sensorPh());
   LINE.notify("PH:"+ (String)sensorPh());
 }
 void send_blynk1()
