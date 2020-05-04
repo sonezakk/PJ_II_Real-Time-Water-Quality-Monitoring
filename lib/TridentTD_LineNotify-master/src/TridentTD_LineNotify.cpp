@@ -3,14 +3,15 @@
 
  TridentTD_LineNotify.cpp - A simple way to send LINE NOTIFY
 
- Version 1.0  03/04/2560 Buddism Era  (2017)  by TridentTD
- Version 1.1  15/02/2561 Buddism Era  (2018)  by TridentTD
- Version 2.0  17/04/2561 Buddism Era  (2018)  add notifySticker()  and notifyPicure() by TridentTD
- Version 2.1  17/04/2561 Buddism Era  (2018)  clean up code for smaller code  by TridentTD
- Version 2.2  20/07/2561 Buddism Era  (2018)  add notify(number) by TridentTD
- Version 2.3  rename DEBUG_PRINT
- Version 2.4  06/01/2562 Buddism Era  (2019)  support 2.3.0, 2.4.0, 2.4.1, 2.4.2, 2.5.0-rc1, 2.5.0-rc2 ...  by TridentTD
- Version 3.0  10/01/2562 Buddhism Era  (2019)  support send by imageFile and imageData
+ Version 1.0   03/04/2560 Buddhism Era  (2017)  by TridentTD
+ Version 1.1   15/02/2561 Buddhism Era  (2018)  by TridentTD
+ Version 2.0   17/04/2561 Buddhism Era  (2018)  add notifySticker()  and notifyPicure() by TridentTD
+ Version 2.1   17/04/2561 Buddhism Era  (2018)  clean up code for smaller code  by TridentTD
+ Version 2.2   20/07/2561 Buddhism Era  (2018)  add notify(number) by TridentTD
+ Version 2.3   rename DEBUG_PRINT
+ Version 2.4   06/01/2562 Buddhism Era  (2019)  support 2.3.0, 2.4.0, 2.4.1, 2.4.2, 2.5.0-rc1, 2.5.0-rc2 ...  by TridentTD
+ Version 3.0   10/01/2562 Buddhism Era  (2019)  support send by imageFile and imageData
+ Version 3.0.1 18/06/2562 Buddhism Era  (2019)  cleanup '\n' code message ending when sending message 
  
 Copyright (c) 2016-2019 TridentTD
 
@@ -118,7 +119,7 @@ bool TridentTD_LineNotify::_notify(String message, int StickerPackageID, int Sti
 #endif
 
   if (!_clientSecure.connect("notify-api.line.me", 443)) {
-    TD_DEBUG_PRINT("connection LINE failed");
+    TD_DEBUG_PRINTLN("connection LINE failed");
     return false;   
   }
 
@@ -129,13 +130,18 @@ bool TridentTD_LineNotify::_notify(String message, int StickerPackageID, int Sti
   String boundary = "----TridentTD_LineNotify--";
 
   String body = "--" + boundary + "\r\n";
-        body += "Content-Disposition: form-data; name=\"message\"\r\n\r\n" + message + " \r\n";
+        body += "Content-Disposition: form-data; name=\"message\"\r\n\r\n" + message ;
+
+      if( (StickerPackageID > 0 && StickerID > 0) || picture_url != "" ||  path != "" || (image_data !=NULL && image_sz > 0) ){
+        body += " \r\n";
+      }
+
       if( StickerPackageID > 0 && StickerID > 0) {
         body += "--" + boundary + "\r\n";
         body += "Content-Disposition: form-data; name=\"stickerPackageId\"\r\n\r\n" + String(StickerPackageID) + "\r\n";
         body += "--" + boundary + "\r\n";
-        body += "Content-Disposition: form-data; name=\"stickerId\"\r\n\r\n" + String(StickerID) + "\r\n";
-      }
+        body += "Content-Disposition: form-data; name=\"stickerId\"\r\n\r\n" + String(StickerID); // + "\r\n";
+      }      
       if( picture_url != "") {
         body += "--" + boundary + "\r\n";
         body += "Content-Disposition: form-data; name=\"imageThumbnail\"\r\n\r\n" + picture_url + "\r\n";

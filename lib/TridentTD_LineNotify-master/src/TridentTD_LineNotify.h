@@ -3,15 +3,16 @@
 
  TridentTD_LineNotify.h - A simple way to send LINE NOTIFY
 
- Version 1.0  03/04/2560 Buddhism Era  (2017)  by TridentTD
- Version 1.1  15/02/2561 Buddhism Era  (2018)  by TridentTD
- Version 2.0  17/04/2561 Buddhism Era  (2018)  add notifySticker()  and notifyPicure() by TridentTD
- Version 2.1  17/04/2561 Buddhism Era  (2018)  clean up code for smaller code  by TridentTD
- Version 2.2  20/07/2561 Buddhism Era  (2018)  add notify(number) by TridentTD
- Version 2.3  rename DEBUG_PRINT
- Version 2.4  06/01/2562 Buddhism Era  (2019)  support 2.3.0, 2.4.0, 2.4.1, 2.4.2, 2.5.0-rc1, 2.5.0-rc2 ...  by TridentTD
- Version 3.0  10/01/2562 Buddhism Era  (2019)  support send by imageFile and imageData
-
+ Version 1.0   03/04/2560 Buddhism Era  (2017)  by TridentTD
+ Version 1.1   15/02/2561 Buddhism Era  (2018)  by TridentTD
+ Version 2.0   17/04/2561 Buddhism Era  (2018)  add notifySticker()  and notifyPicure() by TridentTD
+ Version 2.1   17/04/2561 Buddhism Era  (2018)  clean up code for smaller code  by TridentTD
+ Version 2.2   20/07/2561 Buddhism Era  (2018)  add notify(number) by TridentTD
+ Version 2.3   rename DEBUG_PRINT
+ Version 2.4   06/01/2562 Buddhism Era  (2019)  support 2.3.0, 2.4.0, 2.4.1, 2.4.2, 2.5.0-rc1, 2.5.0-rc2 ...  by TridentTD
+ Version 3.0   10/01/2562 Buddhism Era  (2019)  support send by imageFile and imageData
+ Version 3.0.1 18/06/2562 Buddhism Era  (2019)  cleanup '\n' code message ending when sending message
+ 
 Copyright (c) 2016-2019 TridentTD
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -48,12 +49,12 @@ SOFTWARE.
   #include <FS.h>
   #include <SPIFFS.h>
 #endif
-//#define  LINENOTIFY_DEBUG_MODE
+// #define  LINENOTIFY_DEBUG_MODE
 
 #ifdef LINENOTIFY_DEBUG_MODE
     #define TD_DEBUG_PRINTER Serial
-    #define TD_DEBUG_PRINT(...) { DEBUG_PRINTER.print(__VA_ARGS__); }
-    #define TD_DEBUG_PRINTLN(...) { DEBUG_PRINTER.println(__VA_ARGS__); }
+    #define TD_DEBUG_PRINT(...) { TD_DEBUG_PRINTER.print(__VA_ARGS__); }
+    #define TD_DEBUG_PRINTLN(...) { TD_DEBUG_PRINTER.println(__VA_ARGS__); }
 #else
     #define TD_DEBUG_PRINT(...) { }
     #define TD_DEBUG_PRINTLN(...) { }
@@ -94,7 +95,7 @@ class TridentTD_LineNotify {
     bool    notifyPicture(uint8_t* image_data, size_t image_size);
 
   private:
-    float   _version = 3.0;
+    float   _version = 3.01;
     String  _token;
     // bool		_notify(String message, int StickerPackageID=0, int StickerID=0, String picture_url="");
     bool        _notify(String message, int StickerPackageID=0, int StickerID=0, String picture_url="", fs::FS &fs=SPIFFS , String path="", uint8_t* image_data=NULL, size_t image_size=0);

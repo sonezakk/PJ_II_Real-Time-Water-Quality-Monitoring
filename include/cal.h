@@ -3,13 +3,13 @@
 #include <OneWire.h>
 #include <DS18B20.h>
 #include "ThingSpeak.h"
-#include <TridentTD_LineNotify.h> //LINE
+#include <TridentTD_LineNotify.h>
 #include <BlynkSimpleEsp8266.h>   // BLYNK
 #include <ESP8266HTTPClient.h>
 #include <FirebaseArduino.h>
 
 
-char auth[] = "JX0m0y_m5FomW9eEFnhhZK7pTfNlA8L9";
+// char auth[] = "JX0m0y_m5FomW9eEFnhhZK7pTfNlA8L9";
 //thingspeak
 // unsigned long myChannelNumber = 914246;
 // const char *myWriteAPIKey = "H9JOOZ14XZR40QEG";
@@ -17,6 +17,7 @@ char auth[] = "JX0m0y_m5FomW9eEFnhhZK7pTfNlA8L9";
 
 //line
 #define LINE_TOKEN "xnirEr9FSMfvD2QO6D1oNU7ZibGFkc9GphXjq4Kyeza"
+// #define LINE_TOKEN "wLMNKSY3Vvkv8AbIE6K6bKm7Yx2y2KfRA3JdJUPqzwp"
 
 WidgetLED led(V3);
 WidgetLED ledlink(V7);

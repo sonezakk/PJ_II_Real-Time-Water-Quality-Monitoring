@@ -2,10 +2,10 @@
  * Lib name ::  ESP8266_SSD1306
  *              WebSocketsClient
  */
-#include "AdafruitIO_WiFi.h"
+
 #include <ESP8266WiFi.h>
 #include <WiFiManager.h>
-
+#include "AdafruitIO_WiFi.h"
 #include <Wire.h> // Only needed for Arduino 1.6.5 and earlier
 
 #define SSD1306 ;
@@ -21,14 +21,13 @@ SSD1306Wire display(0x3c, D3, D5);
 #include <show.h>
 
 #define IO_USERNAME "Sonezakk"
-#define IO_KEY "aio_OGmg93xrHmblf0gOFZ38FkPlIp52"
+#define IO_KEY "aio_BsPM83gWF77Y0G6R0DXXpDfLIIel"
 #define ssid "projectsensor" // SSID of your home WiFi
 #define password "0910345985"
-
 AdafruitIO_WiFi io(IO_USERNAME, IO_KEY, ssid, password);
 AdafruitIO_Feed *PH = io.feed("PH");
-AdafruitIO_Feed *DO1 = io.feed("DO-1");
-AdafruitIO_Feed *TEMP1 = io.feed("TEMP-1");
+AdafruitIO_Feed *DO = io.feed("DO");
+AdafruitIO_Feed *TEMP = io.feed("TEMP");
 
 int read_pin = A0;
 int calibate = 0;
@@ -51,12 +50,13 @@ unsigned long last_time3 = 0;
 void setup()
 {
 
-  Serial.begin(115200);
+  Serial.begin(74880);
   Serial.println("Booting");
 
   // setup pin
 
   // WiFiManager wifiManager;
+
   // // wifiManager.resetSettings();  // ใช้สำหรับล้าง config wifi manager ใหม่
   // wifiManager.setConfigPortalTimeout(180);
   // wifiManager.autoConnect("myesp8266");
@@ -70,41 +70,33 @@ void setup()
   // Wait for connection
   while (WiFi.status() != WL_CONNECTED)
   {
-    delay(1000);
+    delay(10);
     Serial.println("....");
   }
   Serial.println("");
   Serial.println("WiFi connected");
   Serial.println(WiFi.localIP());
   digitalWrite(LedWifi, (WiFi.status() == WL_CONNECTED) ? LOW : HIGH);
-
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
-  while (!Serial)
-    ;
-  Serial.print("Connecting to Adafruit IO");
-
-  // connect to io.adafruit.com
-
   LINE.setToken(LINE_TOKEN);
-  
-io.connect();
+  // ThingSpeak.begin(client);
+  // Blynk.begin(auth, ssid, password);
+
   //timer.setInterval(1000L, onoffsensor); //on-off  1s on app //
   sensor.begin();
 }
 
 void loop()
 {
-  if ((millis() - last_time0) >= 2000)
+  if ((millis() - last_time0) >= 1000)
   {
     last_time0 = millis();
-    io.run();
-    
+    Blynk.run();
+    timer.run();
   }
   if ((millis() - last_time1) >= 10000)
   {
     last_time1 = millis();
-    displayLogo2(); // DO
+     displayLogo2(); // DO
     // displayLogo(); //PH
     delay(2000);
   }
@@ -116,6 +108,7 @@ void loop()
     displayCTsenser1();
     serialprintf("DO", sensorDo());
     serialprintf("Temp", sensorTemp());
+    send_blynk1();
   }
 
   // PH//
@@ -129,14 +122,13 @@ void loop()
 
   //   send_blynk();
   // }
-  if ((millis() - last_time3) >= 10000)
+  if ((millis() - last_time3) >= 5000)
   {
 
     last_time3 = millis();
     // senddata_thingspeak();
-    senddata_thingspeak1();
-    DO1->save(sensorDo());
-    TEMP1->save(sensorTemp());
+    // senddata_thingspeak1();
+    // ThingSpeak.writeFields(myChannelNumber, myWriteAPIKey);
   }
 
   //   for (int i = 0; i <=5 ; i++)
