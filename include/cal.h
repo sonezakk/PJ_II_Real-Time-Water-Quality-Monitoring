@@ -4,16 +4,17 @@
 #include <DS18B20.h>
 #include "ThingSpeak.h"
 #include <TridentTD_LineNotify.h>
-#include <BlynkSimpleEsp8266.h>   // BLYNK
+#include <BlynkSimpleEsp8266.h> // BLYNK
 #include <ESP8266HTTPClient.h>
 #include <FirebaseArduino.h>
 
-
-// char auth[] = "JX0m0y_m5FomW9eEFnhhZK7pTfNlA8L9";
-//thingspeak
-// unsigned long myChannelNumber = 914246;
-// const char *myWriteAPIKey = "H9JOOZ14XZR40QEG";
-// const char *server = "api.thingspeak.com";
+ char auth[] = "JX0m0y_m5FomW9eEFnhhZK7pTfNlA8L9";
+// thingspeak
+unsigned long myChannelNumber = 914246;
+const char *myWriteAPIKey = "H9JOOZ14XZR40QEG";
+// unsigned long myChannelNumber = 1053288;
+// const char *myWriteAPIKey = "Z53CASXBD9KF2YJF";
+const char *server = "api.thingspeak.com";
 
 //line
 #define LINE_TOKEN "xnirEr9FSMfvD2QO6D1oNU7ZibGFkc9GphXjq4Kyeza"
@@ -33,9 +34,6 @@ DS18B20 sensor(&oneWire);
 float sensorTemp();
 String timenows();
 String daynows();
-
-
-
 
 // oxygen//
 const float SaturationValueTab[41] PROGMEM = {
@@ -85,15 +83,15 @@ const float SaturationValueTab[41] PROGMEM = {
 
 float sensorPh()
 {
-   int  sensorValueph =0,avg_sensorph ; 
+  int sensorValueph = 0, avg_sensorph;
   // float a = analogRead(read_pin);
-  for(int i=0;i<300;i++)
+  for (int i = 0; i < 300; i++)
   {
-      sensorValueph +=analogRead(A0);
+    sensorValueph += analogRead(A0);
   }
-  avg_sensorph=  sensorValueph/300;
+  avg_sensorph = sensorValueph / 300;
 
-  float Ph = ( avg_sensorph * 0.0254) -9.8523;
+  float Ph = (avg_sensorph * 0.0254) - 9.8523;
   return Ph;
 }
 float sensorDo()
@@ -135,12 +133,14 @@ float sensorTemp()
 
 void senddata_thingspeak1()
 {
-
-  LINE.notify("DO:"+ (String)sensorDo()+ "Temp :" + (String)sensorTemp());
+  ThingSpeak.setField(2, sensorDo());
+  ThingSpeak.setField(3, sensorTemp());
+  LINE.notify("DO:" + (String)sensorDo() + "Temp :" + (String)sensorTemp());
 }
 void senddata_thingspeak()
 {
-  LINE.notify("PH:"+ (String)sensorPh());
+  ThingSpeak.setField(1, sensorPh());
+  LINE.notify("PH:" + (String)sensorPh());
 }
 void send_blynk1()
 {
@@ -153,11 +153,10 @@ void send_blynk1()
 }
 void send_blynk()
 {
-  
-  char PhBlynk[16];
-  dtostrf(sensorPh(), 2, 2,PhBlynk);
-  Blynk.virtualWrite(V0,PhBlynk);
 
+  char PhBlynk[16];
+  dtostrf(sensorPh(), 2, 2, PhBlynk);
+  Blynk.virtualWrite(V0, PhBlynk);
 }
 
 void onoffsensor()
@@ -173,12 +172,10 @@ void onoffsensor()
 }
 void serialprintf(String type, float data)
 {
-  Serial.println(type +" sensor : " + (String)data);
-  
+  Serial.println(type + " sensor : " + (String)data);
 }
 
-
-// /////// ควบคุม //////////////// 
+// /////// ควบคุม ////////////////
 // void controlmoter(int status)
 // {
 //   statusmorter = status;
@@ -192,15 +189,15 @@ void serialprintf(String type, float data)
 //   if (data >= max)
 //   {
 //     controlmoter(0);
-//   
+//
 //     LINE.notify("ปั้มหยุดทำงาน");
 
 //   }
 //   if (data <= min)
 //   {
 //     controlmoter(1);
-//  
+//
 //     LINE.notify("ปั้มกำลังทำงาน");
- 
+
 //   }
 // }
