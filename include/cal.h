@@ -112,7 +112,7 @@ float sensorDo()
 
   doValue = pgm_read_float(&SaturationValueTab[0] + (int)temp);
   float volts = (3000 * ((float)avg_sensor / 1023));
-  float Do = (doValue * volts) / 1127.6;
+  float Do = ((doValue * volts) / 1127.6)/2;
 
   // Serial.println("temp : = " + (String)temp);
   // Serial.println("analogreadDo : " + (String)avg_sensor + " DO : " + (String)Do);

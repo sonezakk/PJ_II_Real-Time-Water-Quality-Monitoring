@@ -95,14 +95,14 @@ void loop()
   if ((millis() - last_time0) >= 3000)
   {
     last_time0 = millis();
-    Blynk.run();
-    timer.run();
+    //Blynk.run();
+    //timer.run();
   }
   if ((millis() - last_time1) >= 10000)
   {
     last_time1 = millis();
-    // displayLogo2(); // DO
-  displayLogo(); //PH
+    //displayLogo2(); // DO
+    displayLogo(); //PH
     delay(2000);
   }
   // // // // DO AND TEMP//
@@ -113,10 +113,7 @@ void loop()
   //   displayCTsenser1();
   //   serialprintf("DO", sensorDo());
   //   serialprintf("Temp", sensorTemp());
-  //   ThingSpeak.setField(5, sensorDo());
-  //   ThingSpeak.setField(6, sensorTemp());
-  //   send_blynk1();
-  //   ThingSpeak.writeFields(myChannelNumber, myWriteAPIKey);
+
   // }
 
   // PH//
@@ -126,17 +123,14 @@ void loop()
     last_time3 = millis();
     displayCTsenser();
     send_blynk();
-  
-   
 
     serialprintf("PH", sensorPh());
-
-   }
-    if ((millis() - last_time4) >= 900000)
+  }
+  if ((millis() - last_time4) >= 960000)
   {
 
     last_time4 = millis();
-     senddata_thingspeak();
+    senddata_thingspeak();
     //senddata_thingspeak1();
     ThingSpeak.writeFields(myChannelNumber, myWriteAPIKey);
   }
